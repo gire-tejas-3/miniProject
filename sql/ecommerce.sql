@@ -13,3 +13,8 @@ PASSWORD varchar(255) not null,
 ROLE enum("admin","user","guest") not null,
 primary key(ID)
 );
+insert into users(USERNAME, PASSWORD,  ROLE) values ('tejas', 'HappyToHelp@24', 'admin'),
+('mahesh', 'mahesh9780', 'admin'),
+('ritu', 'ritu123', 'admin'),
+('rahul', 'rahul123', 'admin');
+

@@ -14,7 +14,7 @@ public class DatabaseConnection {
 	public static Connection getConnection() {
 		try {
 			FileInputStream fis = new FileInputStream(
-					"C:\\Users\\TEJAS\\java_development_main\\vc_code\\miniProject\\src\\com\\ecommerce\\database\\config.properties");
+					"D:\\MiniProjectJava\\miniProject\\src\\com\\ecommerce\\database\\config.properties");
 			Properties properties = new Properties();
 			properties.load(fis);
 
@@ -42,5 +42,7 @@ public class DatabaseConnection {
 		// return Connection
 		return connection;
 	}
+	
+	//C:\\Users\\TEJAS\\java_development_main\\vc_code\\miniProject\\src\\com\\ecommerce\\database\\config.properties
 
 }

@@ -38,4 +38,8 @@ public class DatabaseConnection {
 		// return Connection
 		return connection;
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(connection);
+	}
 }

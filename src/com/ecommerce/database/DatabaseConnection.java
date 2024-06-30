@@ -22,7 +22,11 @@ public class DatabaseConnection {
 			String dbUser = properties.getProperty("dbUserName");
 			String dbPassword = properties.getProperty("dbPassword");
 
-			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println(dbUrl);
+			System.out.println(dbUser);
+			System.out.println(dbPassword);
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
 		} catch (FileNotFoundException e) {
@@ -38,8 +42,5 @@ public class DatabaseConnection {
 		// return Connection
 		return connection;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(connection);
-	}
+
 }

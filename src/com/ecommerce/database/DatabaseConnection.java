@@ -34,5 +34,7 @@ public class DatabaseConnection {
 		// return Connection
 		return connection;
 	}
+	
+	//C:\\Users\\TEJAS\\java_development_main\\vc_code\\miniProject\\src\\com\\ecommerce\\database\\config.properties
 
 }

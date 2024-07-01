@@ -1,19 +1,30 @@
-create schema ecommerce;
+-- DROP SCHEMA IF EXISTS ecommerce;
+CREATE SCHEMA ecommerce;
 
-use ecommerce;
+USE ecommerce;
 
-create table products(PID int auto_increment,
-DESCRIPTION text not null,
-PRODUCT_NAME varchar(255) not null,
-PRICE double not null,
-QUANTITY int not null,
-primary key(PID)
+-- DROP TABLE IF EXISTS products; 
+CREATE TABLE products(PID INT AUTO_INCREMENT,
+DESCRIPTION TEXT NOT NULL,
+PRODUCT_NAME VARCHAR(255) NOT NULL,
+PRICE DOUBLE NOT NULL,
+QUANTITY INT NOT NULL,
+PRIMARY KEY(PID)
 );
 
-create table users(ID int auto_increment,
-USERNAME varchar(255) not null unique,
-PASSWORD varchar(255) not null,
-ROLE enum("admin","user","guest") not null,
-primary key(ID)
+-- DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+ID INT AUTO_INCREMENT,
+FIRSTNAME VARCHAR(100) NOT NULL,
+LASTNAME VARCHAR(100) NOT NULL,
+USERNAME VARCHAR(255) NOT NULL UNIQUE,
+PASSWORD VARCHAR(255) NOT NULL,
+EMAIL VARCHAR(50) NOT NULL,
+PHONE VARCHAR(15) NOT NULL,
+ADDRESS VARCHAR(255) NOT NULL,
+ROLE ENUM("admin","user","guest") NOT NULL,
+ISlOGGEDIN BOOLEAN,
+ISACTIVE BOOLEAN,
+PRIMARY KEY(ID)
 );
 

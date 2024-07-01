@@ -6,62 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+
 import com.ecommerce.database.DatabaseConnection;
 
-public class Product {
-	private int id;
-	private String name;
-	private String description;
-	private double price;
-	private int quantity;
 
-	public int getId() {
-		return id;
-	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public Product(int id, String name, String description, double price, int quantity) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.quantity = quantity;
+public class AddProductTest {
+	
+	public static void main(String[] args) {
+		try {
+			getInputProduct();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
 	}
 
 	public static void getInputProduct() throws SQLException {
@@ -82,9 +40,9 @@ public class Product {
 			int quantity = scanner.nextInt();
 			System.out.println("Product quantity>> " + quantity);
 			
+		
 			addProduct(name, description, price, quantity);
 		}
-
 		
 
 	}
@@ -109,31 +67,6 @@ public class Product {
 			ps.close();
 		}
 
-	}
-
-	PreparedStatement ps = null;
-	ResultSet rs = null;
-
-	public void getProduct() throws SQLException {
-		Connection conn = DatabaseConnection.getConnection();
-		try {
-			ps = conn.prepareStatement("select * from products order by PRODUCT_NAME");
-			rs = ps.executeQuery();
-			while (rs.next()) {
-
-				System.out.println("Product name>>" + rs.getString("PRODUCT_NAME"));
-				System.out.println("Description>> " + rs.getString("DESCRIPTION"));
-				System.out.println("Price>> " + rs.getDouble("PRICE"));
-				System.out.println("Quantity>> " + rs.getInt("QUANTITY"));
-
-			}
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		} finally {
-			ps.close();
-			rs.close();
-		}
 	}
 
 }

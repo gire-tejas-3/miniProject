@@ -86,10 +86,6 @@ public class UserService implements UserServiceInterface {
 		}
 	}
 
-	
-	
-	
-	
 	// Temporary
 	public static void main(String[] args) throws SQLException {
 		UserServiceInterface userService = new UserService();

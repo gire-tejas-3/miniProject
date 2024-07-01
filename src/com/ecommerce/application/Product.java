@@ -1,11 +1,14 @@
 package com.ecommerce.application;
 
+import java.sql.Connection;
+
 public class Product {
 	private int id;
 	private String name;
 	private String description;
 	private double price;
 	private int quantity;
+	
 	public int getId() {
 		return id;
 	}

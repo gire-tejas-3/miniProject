@@ -1,8 +1,7 @@
 package com.ecommerce.database;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,9 +11,9 @@ public class DatabaseConnection {
 	private static Connection connection = null;
 
 	public static Connection getConnection() {
+		InputStream fis;
 		try {
-			FileInputStream fis = new FileInputStream(
-					"C:\\Users\\TEJAS\\java_development_main\\vc_code\\miniProject\\src\\com\\ecommerce\\database\\config.properties");
+			fis = DatabaseConnection.class.getClassLoader().getResourceAsStream("config.properties");
 			Properties properties = new Properties();
 			properties.load(fis);
 
@@ -28,14 +27,7 @@ public class DatabaseConnection {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+		} catch (IOException | SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 

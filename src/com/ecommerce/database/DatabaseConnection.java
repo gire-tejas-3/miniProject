@@ -21,20 +21,13 @@ public class DatabaseConnection {
 			String dbUser = properties.getProperty("dbUserName");
 			String dbPassword = properties.getProperty("dbPassword");
 
-			System.out.println(dbUrl);
-			System.out.println(dbUser);
-			System.out.println(dbPassword);
-
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 		} catch (IOException | SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		// return Connection
 		return connection;
 	}
-	
-	//C:\\Users\\TEJAS\\java_development_main\\vc_code\\miniProject\\src\\com\\ecommerce\\database\\config.properties
 
 }

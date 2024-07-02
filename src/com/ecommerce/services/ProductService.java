@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.ecommerce.database.DatabaseConnection;
 import com.ecommerce.exceptions.ProductServiceException;
 import com.ecommerce.interfaces.ProductServiceInterface;
@@ -27,6 +26,10 @@ public class ProductService implements ProductServiceInterface {
 			ps.setString(1, "user");
 			ps.setString(2, "pid");
 			result = ps.executeQuery();
+			if (result.next() == false) {
+				throw new ProductServiceException("No Product Found!");
+			}
+
 			while (result.next()) {
 				products.add(new Product(result.getString("product_name"), result.getString("description"),
 						result.getDouble("price"), result.getInt("quantity	")));
@@ -57,6 +60,7 @@ public class ProductService implements ProductServiceInterface {
 			ps.setInt(3, product.getQuantity());
 
 			int result = ps.executeUpdate();
+			System.out.println("New Product Added!");
 
 		} catch (SQLException | ProductServiceException e) {
 			System.err.println(e.getMessage());
@@ -64,6 +68,33 @@ public class ProductService implements ProductServiceInterface {
 			ps.close();
 			con.close();
 		}
+	}
+
+	// 10.Check Quantity
+	@Override
+	public int checkProductQuantity(int productId) throws SQLException, ProductServiceException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet result = null;
+		try {
+			con = DatabaseConnection.getConnection();
+			ps = con.prepareStatement("SELECT quantity FROM products WHERE pid = ? ");
+			ps.setInt(1, productId);
+			result = ps.executeQuery();
+
+			if (result.next()) {
+				return result.getInt("quantity");
+			} else {
+				throw new ProductServiceException("Product with ID " + productId + " not found.");
+			}
+		} catch (ProductServiceException | SQLException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			result.close();
+			ps.close();
+			con.close();
+		}
+		return -1;
 	}
 
 }

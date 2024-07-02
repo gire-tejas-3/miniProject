@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import com.ecommerce.database.DatabaseConnection;
 import com.ecommerce.exceptions.UserServiceException;
 import com.ecommerce.interfaces.UserServiceInterface;

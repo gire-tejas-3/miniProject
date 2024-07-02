@@ -1,4 +1,4 @@
-package com.ecommerce.application;
+package com.ecommerce.model;
 
 public class User {
 	private int id;

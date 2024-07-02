@@ -1,4 +1,4 @@
-package com.ecommerce.application;
+package com.ecommerce.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +15,20 @@ public class Product {
 	private double price;
 	private int quantity;
 
+	// Constructors
+	public Product() {
+
+	}
+
+	public Product(String name, String description, double price, int quantity) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.quantity = quantity;
+	}
+
+	// Getters and Setters
 	public int getId() {
 		return id;
 	}
@@ -55,15 +69,6 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-	public Product(int id, String name, String description, double price, int quantity) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.price = price;
-		this.quantity = quantity;
-	}
-
 	public static void getInputProduct() throws SQLException {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please enter how many product you want to add....");
@@ -81,11 +86,9 @@ public class Product {
 			System.out.println("Please enter  quantity>>");
 			int quantity = scanner.nextInt();
 			System.out.println("Product quantity>> " + quantity);
-			
+
 			addProduct(name, description, price, quantity);
 		}
-
-		
 
 	}
 
@@ -112,6 +115,7 @@ public class Product {
 	}
 
 	PreparedStatement ps = null;
+
 	ResultSet rs = null;
 
 	public void getProduct() throws SQLException {
@@ -136,4 +140,9 @@ public class Product {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", quantity=" + quantity + "]";
+	}
 }

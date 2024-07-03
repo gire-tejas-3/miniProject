@@ -1,4 +1,4 @@
-package com.ecommerce.application;
+package com.ecommerce.model;
 
 public class User {
 	private int id;
@@ -46,6 +46,15 @@ public class User {
 		this.role = role;
 		this.isLoggedIn = isLoggedIn;
 		this.isActive = isActive;
+	}
+
+	public User(String username, String firstName, String lastName, String email, String phone, String address) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
 	}
 
 	// Getter and Setter Methods

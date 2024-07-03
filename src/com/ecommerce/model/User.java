@@ -48,6 +48,15 @@ public class User {
 		this.isActive = isActive;
 	}
 
+	public User(String username, String firstName, String lastName, String email, String phone, String address) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+	}
+
 	// Getter and Setter Methods
 	public int getId() {
 		return id;

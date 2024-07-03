@@ -13,6 +13,32 @@ import com.ecommerce.model.Product;
 
 public class ProductService implements ProductServiceInterface {
 
+	// Get Product By ID which return to addToCart
+	@Override
+	public Product getProductById(int productId) throws SQLException, ProductServiceException {
+		Product product = null;
+		Connection con = null;
+		ResultSet result = null;
+		PreparedStatement ps = null;
+		try {
+			con = DatabaseConnection.getConnection();
+			ps = con.prepareStatement("SELECT * FROM Products WHERE id = ?");
+			ps.setInt(1, productId);
+			result = ps.executeQuery();
+			if (result.next()) {
+				product = new Product(result.getInt("id"), result.getString("name"), result.getString("description"),
+						result.getDouble("price"), result.getInt("quantity"));
+			}
+		} catch (SQLException | ProductServiceException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			result.close();
+			ps.close();
+			con.close();
+		}
+		return product;
+	}
+
 	// 3. User view Product item as Sorted Order
 	@Override
 	public List<Product> getAllProductsSorted() throws SQLException, ProductServiceException {

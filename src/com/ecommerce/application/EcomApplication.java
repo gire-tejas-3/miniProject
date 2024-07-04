@@ -6,12 +6,14 @@ import java.util.Scanner;
 import com.ecommerce.exceptions.OrderServiceException;
 import com.ecommerce.exceptions.ProductServiceException;
 import com.ecommerce.exceptions.UserServiceException;
+import com.ecommerce.interfaces.AdminServiceInterface;
 import com.ecommerce.interfaces.CartServiceInterface;
 import com.ecommerce.interfaces.ProductServiceInterface;
 import com.ecommerce.interfaces.UserServiceInterface;
 import com.ecommerce.model.Order;
 import com.ecommerce.model.Product;
 import com.ecommerce.model.User;
+import com.ecommerce.services.AdminService;
 import com.ecommerce.services.CartServices;
 import com.ecommerce.services.ProductService;
 import com.ecommerce.services.UserService;
@@ -23,6 +25,7 @@ public class EcomApplication {
 		UserServiceInterface userService = new UserService();
 		ProductServiceInterface productService = new ProductService();
 		CartServiceInterface cartService = new CartServices();
+		AdminServiceInterface adminService = new AdminService();
 		User currentUser = null;
 		try {
 			while (true) {
@@ -196,7 +199,7 @@ public class EcomApplication {
 				case 8:
 					try {
 						if (currentUser != null && "admin".equalsIgnoreCase(currentUser.getRole())) {
-						cartService.calculateBill();	
+							adminService.calculateBill();
 						} else {
 							throw new UserServiceException("Only Admins can Calculate Bill");
 						}
@@ -207,7 +210,7 @@ public class EcomApplication {
 				case 9:
 					try {
 						if (currentUser != null && "admin".equalsIgnoreCase(currentUser.getRole())) {
-						cartService.displayBill();	
+							adminService.displayBill();
 						} else {
 							throw new UserServiceException("Only Admins can Calculate Bill");
 						}
@@ -215,6 +218,9 @@ public class EcomApplication {
 						System.err.println(e.getMessage());
 					}
 					break;
+
+				case 10:
+
 				}
 			}
 

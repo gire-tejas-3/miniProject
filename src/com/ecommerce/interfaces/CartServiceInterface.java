@@ -11,7 +11,4 @@ public interface CartServiceInterface {
 
 	public Order checkout(User user) throws SQLException;
 
-	public double calculateBill();
-
-	public void displayBill();
 }

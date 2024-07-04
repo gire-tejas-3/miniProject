@@ -13,6 +13,7 @@ import com.ecommerce.model.OrderDetails;
 import com.ecommerce.model.User;
 
 public class AdminService implements AdminServiceInterface {
+	private static final double TAX_RATE = 9d / 100d; // 9% tax
 
 	@Override
 	public void viewRegisteredUsers() throws SQLException, UserServiceException {
@@ -84,5 +85,52 @@ public class AdminService implements AdminServiceInterface {
 		}
 
 	}
+
+	// 8. Calculate Bill
+    @Override
+    public double calculateBill() throws SQLException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double totalAmount = 0.0;
+
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("SELECT total_amount FROM orders");
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                totalAmount += rs.getDouble("total_amount");
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        }
+
+        return totalAmount;
+    }
+
+    // 9. Display amount to End User
+    @Override
+    public void displayBill() {
+        try {
+            double totalAmount = calculateBill();
+            double taxAmount = totalAmount * TAX_RATE;
+            double finalAmount = totalAmount + taxAmount;
+            System.out.println();
+            System.out.println("***************************");
+            System.out.println("Amount: " + totalAmount);
+            System.out.println("Tax: " + taxAmount);
+            System.out.println("Total Amount: " + finalAmount);
+            System.out.println("***************************");
+            System.out.println();
+        } catch (SQLException e) {
+            System.err.println("Error calculating bill: " + e.getMessage());
+        }
+    }
 
 }

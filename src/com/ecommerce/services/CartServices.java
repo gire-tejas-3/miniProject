@@ -16,7 +16,6 @@ import com.ecommerce.model.*;
 
 public class CartServices implements CartServiceInterface {
 	private List<OrderDetails> cart = new ArrayList<OrderDetails>();
-	private static final double TAX_RATE = 9d / 100d; // 9% tax
 
 	// 4. Buy Product
 	@Override
@@ -35,31 +34,6 @@ public class CartServices implements CartServiceInterface {
 		for (OrderDetails item : cart) {
 			System.out.println(item);
 		}
-	}
-
-	// 8. Calculate Bill
-	@Override
-	public double calculateBill() {
-		double totalAmount = 0;
-		for (OrderDetails item : cart) {
-			totalAmount += item.getPrice();
-		}
-		return totalAmount;
-	}
-
-	// 9. Display amount to End User
-	@Override
-	public void displayBill() {
-		double totalAmount = calculateBill();
-		double taxAmount = totalAmount * TAX_RATE;
-		double finalAmount = totalAmount + taxAmount;
-		System.out.println();
-		System.out.println("***************************");
-		System.out.println("Amount: " + totalAmount);
-		System.out.println("Tax: " + taxAmount);
-		System.out.println("Total Amount: " + finalAmount);
-		System.out.println("***************************");
-		System.out.println();
 	}
 
 	// 6. Purchase the item

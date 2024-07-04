@@ -1,4 +1,4 @@
--- DROP SCHEMA IF EXISTS ecommerce;
+-- DROP SCHEMA IF EXISTS ecommerce; 
 CREATE SCHEMA ecommerce;
 
 USE ecommerce;

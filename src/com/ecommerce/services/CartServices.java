@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.sql.Statement;
 
 import com.ecommerce.database.DatabaseConnection;
 import com.ecommerce.exceptions.ProductServiceException;
@@ -20,8 +21,12 @@ public class CartServices implements CartServiceInterface {
 	// 4. Buy Product
 	@Override
 	public void addToCart(Product product, int quantity) {
-		cart.add(new OrderDetails(0, product.getId(), quantity, quantity * product.getPrice()));
-		System.out.println("Item Added to Cart!");
+		try {
+			cart.add(new OrderDetails(0, product.getId(), quantity, quantity * product.getPrice()));
+			System.out.println("Item added to cart!");
+		} catch (Exception e) {
+			System.out.println("Failed to add item to cart: " + e.getMessage());
+		}
 	}
 
 	// 5. View Cart
@@ -32,7 +37,7 @@ public class CartServices implements CartServiceInterface {
 		}
 	}
 
-	//8. Calculate Bill
+	// 8. Calculate Bill
 	@Override
 	public double calculateBill() {
 		double totalAmount = 0;
@@ -42,7 +47,6 @@ public class CartServices implements CartServiceInterface {
 		return totalAmount;
 	}
 
-	
 	// 9. Display amount to End User
 	@Override
 	public void displayBill() {
@@ -73,8 +77,11 @@ public class CartServices implements CartServiceInterface {
 
 		try {
 			con = DatabaseConnection.getConnection();
+			con.setAutoCommit(false);
+
 			// insert into order table
-			orderPs = con.prepareStatement("INSERT INTO orders (user_id, total_amount) VALUES(?, ?)");
+			orderPs = con.prepareStatement("INSERT INTO orders (user_id, total_amount) VALUES(?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
 			orderPs.setInt(1, user.getId());
 			orderPs.setDouble(2, totalAmount);
 			orderPs.executeUpdate();
@@ -94,21 +101,33 @@ public class CartServices implements CartServiceInterface {
 				orderDetailPs = con.prepareStatement(
 						"INSERT INTO orderDetails (order_id, product_id, quantity, price) VALUES (?,?,?,?)");
 				orderDetailPs.setInt(1, item.getOrderId());
-				orderDetailPs.setInt(1, item.getProductId());
-				orderDetailPs.setInt(1, item.getQuantity());
-				orderDetailPs.setDouble(1, item.getPrice());
+				orderDetailPs.setInt(2, item.getProductId());
+				orderDetailPs.setInt(3, item.getQuantity());
+				orderDetailPs.setDouble(4, item.getPrice());
 				orderDetailPs.executeUpdate();
 			}
+			con.commit();
 			cart.clear();
 			return new Order(orderId, user.getId(), totalAmount, new Date());
 
 		} catch (SQLException | ProductServiceException e) {
+			if (con != null) {
+				con.rollback();
+			}
 			System.err.println(e.getMessage());
 		} finally {
-			orderResult.close();
-			orderDetailPs.close();
-			orderPs.close();
-			con.close();
+			if (orderResult != null) {
+				orderResult.close();
+			}
+			if (orderDetailPs != null) {
+				orderDetailPs.close();
+			}
+			if (orderPs != null) {
+				orderPs.close();
+			}
+			if (con != null) {
+				con.close();
+			}
 		}
 		return null;
 	}

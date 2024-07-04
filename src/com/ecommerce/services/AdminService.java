@@ -29,9 +29,10 @@ public class AdminService implements AdminServiceInterface {
 				throw new UserServiceException("");
 
 			while (userRs.next()) {
-				System.out.println(new User(userRs.getString("username"), userRs.getString("firstname"),
-						userRs.getString("lastname"), userRs.getString("email"), userRs.getString("phone"),
-						userRs.getString("address")));
+				System.out.println(new User(userRs.getInt("id"), userRs.getString("username"),
+						userRs.getString("password"), userRs.getString("role"), userRs.getString("firstName"),
+						userRs.getString("lastName"), userRs.getString("email"), userRs.getString("phone"),
+						userRs.getString("address"), userRs.getBoolean("isloggedin"), userRs.getBoolean("isactive")));
 			}
 		} catch (SQLException | UserServiceException e) {
 			System.err.println(e.getMessage());

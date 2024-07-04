@@ -15,14 +15,14 @@ public class User {
 
 	// Constructors
 	public User() {
-		super();
-		this.isLoggedIn = false;
-		this.isActive = true;
+	}
+
+	public User(int id) {
+		this.id = id;
 	}
 
 	public User(String firstName, String lastName, String username, String password, String email, String phone,
 			String address, String role) {
-		this();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
@@ -33,9 +33,22 @@ public class User {
 		this.role = role;
 	}
 
-	public User(String firstName, String lastName, String username, String password, String email, String phone,
+	public User(int id, String firstName, String lastName, String username, String password, String email, String phone,
+			String address, String role) {
+		this(id);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.role = role;
+	}
+
+	public User(int id, String firstName, String lastName, String username, String password, String email, String phone,
 			String address, String role, boolean isLoggedIn, boolean isActive) {
-		super();
+		this(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
@@ -46,15 +59,6 @@ public class User {
 		this.role = role;
 		this.isLoggedIn = isLoggedIn;
 		this.isActive = isActive;
-	}
-
-	public User(String username, String firstName, String lastName, String email, String phone, String address) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.email = email;
-		this.phone = phone;
-		this.address = address;
 	}
 
 	// Getter and Setter Methods

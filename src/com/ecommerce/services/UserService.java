@@ -32,6 +32,7 @@ public class UserService implements UserServiceInterface {
 		}
 		return true;
 	}
+
 	// 1. User Registration
 	@Override
 	public void registerUser(User user) throws SQLException, UserServiceException {
@@ -44,6 +45,7 @@ public class UserService implements UserServiceInterface {
 			}
 
 			if (userValidate(user.getUsername(), user.getPassword())) {
+				System.out.println(ps);
 				ps = con.prepareStatement(
 						"INSERT INTO users (firstname, lastname, username, password, email, phone, address, role, isloggedin, isactive) "
 								+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -68,16 +70,23 @@ public class UserService implements UserServiceInterface {
 		} catch (UserServiceException | SQLException e) {
 			System.err.println(e.getMessage());
 		} finally {
-			ps.close();
-			con.close();
+			if (ps != null) {
+				ps.close();
+			}
+
+			if (con != null) {
+				con.close();
+			}
 		}
 	}
+
 	// 2. User Login
 	@Override
-	public void loginUser(String username, String password) throws SQLException, UserServiceException {
+	public User loginUser(String username, String password) throws SQLException, UserServiceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet result = null;
+		PreparedStatement updatePs = null;
 
 		try {
 			con = DatabaseConnection.getConnection();
@@ -87,62 +96,35 @@ public class UserService implements UserServiceInterface {
 			result = ps.executeQuery();
 
 			if (result.next()) {
-				PreparedStatement updatePs = con.prepareStatement("UPDATE users SET isloggedin=?, isactive=?");
+				int userId = result.getInt("id");
+//	            System.out.println("User ID: " + userId);
+	            
+				updatePs = con.prepareStatement("UPDATE users SET isloggedin=?, isactive=? WHERE username=?");
 				updatePs.setBoolean(1, true);
 				updatePs.setBoolean(2, true);
+				updatePs.setString(3, result.getString("username"));
+				updatePs.executeUpdate();
 				System.out.println("Login successful! Welcome, " + result.getString("firstName"));
-				updatePs.close();
+				System.out.println();
+				return new User(userId, result.getString("firstName"), result.getString("lastName"),
+						result.getString("username"), result.getString("password"), result.getString("email"),
+						result.getString("phone"), result.getString("address"), result.getString("role"),
+						result.getBoolean("isloggedin"), result.getBoolean("isactive"));
 			} else {
 				throw new UserServiceException("Invalid username or password.");
 			}
 		} catch (UserServiceException | SQLException e) {
 			System.err.println(e.getMessage());
 		} finally {
-			result.close();
-			ps.close();
-			con.close();
+			if (result != null)
+				result.close();
+			if (updatePs != null)
+				updatePs.close();
+			if (ps != null)
+				ps.close();
+			if (con != null)
+				con.close();
 		}
-
+		return null;
 	}
-
-//	// Temporary
-//	public static void main(String[] args) throws SQLException {
-//		UserServiceInterface userService = new UserService();
-//		Scanner sc = new Scanner(System.in);
-////		System.out.println("Enter First Name: ");
-////		String firstName = sc.next();
-////
-////		System.out.println("Enter Last Name: ");
-////		String lastName = sc.next();
-////
-////		System.out.println("Enter Username: ");
-////		String username = sc.next();
-////
-////		System.out.println("Enter Password: ");
-////		String password = sc.next();
-////
-////		System.out.println("Enter Email: ");
-////		String email = sc.next();
-////
-////		System.out.println("Enter Phone: ");
-////		String phone = sc.next();
-////
-////		System.out.println("Enter Address: ");
-////		String address = sc.next();
-////
-////		System.out.println("Enter Role(admin/user/guest): ");
-////		String role = sc.next();
-////
-////		User user = new User(firstName, lastName, username, password, email, phone, address, role);
-////		userService.registerUser(user);
-//
-//		System.out.println("\nNow, let's try logging in.");
-//		System.out.println("Enter Username: ");
-//		String username1 = sc.next();
-//
-//		System.out.println("Enter Password: ");
-//		String password1 = sc.next();
-//		userService.loginUser(username1, password1);
-//	}
-//
 }

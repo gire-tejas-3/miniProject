@@ -108,6 +108,7 @@ public class ProductService implements ProductServiceInterface {
 		ResultSet result = null;
 		try {
 			con = DatabaseConnection.getConnection();
+			
 			ps = con.prepareStatement("SELECT quantity FROM products WHERE pid = ? ");
 			ps.setInt(1, productId);
 			result = ps.executeQuery();

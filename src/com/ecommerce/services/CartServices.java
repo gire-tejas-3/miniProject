@@ -13,9 +13,11 @@ import com.ecommerce.database.DatabaseConnection;
 import com.ecommerce.exceptions.ProductServiceException;
 import com.ecommerce.interfaces.CartServiceInterface;
 import com.ecommerce.model.*;
+import com.ecommerce.services.*;
 
 public class CartServices implements CartServiceInterface {
 	private List<OrderDetails> cart = new ArrayList<OrderDetails>();
+	ProductService productService = new ProductService();
 
 	// 4. Buy Product
 	@Override
@@ -79,6 +81,21 @@ public class CartServices implements CartServiceInterface {
 				orderDetailPs.setInt(3, item.getQuantity());
 				orderDetailPs.setDouble(4, item.getPrice());
 				orderDetailPs.executeUpdate();
+				
+				// Reduce product quantity in Product table
+				ProductService productService = new ProductService();
+	            int currentQuantity = productService.checkProductQuantity(item.getProductId());
+	            int newQuantity = currentQuantity - item.getQuantity();
+	            if (newQuantity < 0) {
+	                throw new ProductServiceException("Not enough quantity available for product ID " + item.getProductId());
+	            }
+
+	            PreparedStatement updateProductPs = con.prepareStatement(
+	                    "UPDATE products SET quantity = ? WHERE pid = ?");
+	            updateProductPs.setInt(1, newQuantity);
+	            updateProductPs.setInt(2, item.getProductId());
+	            updateProductPs.executeUpdate();
+	            updateProductPs.close();
 			}
 			con.commit();
 			cart.clear();

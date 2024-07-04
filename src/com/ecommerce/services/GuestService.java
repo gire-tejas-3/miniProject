@@ -13,15 +13,15 @@ import com.ecommerce.interfaces.GuestServiceInterface;
 import com.ecommerce.model.Product;
 
 public class GuestService implements GuestServiceInterface {
-	public List<Product> getAllProduct() throws SQLException, ProductServiceException {
+	@Override
+	public List<Product> getAllProducts() throws SQLException, ProductServiceException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet result = null;
 		List<Product> products = new ArrayList<Product>();
 		try {
 			con = DatabaseConnection.getConnection();
-			ps = con.prepareStatement("SELECT * FROM products WHERE role=? ");
-			ps.setString(1, "guest");
+			ps = con.prepareStatement("SELECT * FROM products WHERE ");
 			result = ps.executeQuery();
 			if (result.next() == false) {
 				throw new ProductServiceException("No Product Found!");

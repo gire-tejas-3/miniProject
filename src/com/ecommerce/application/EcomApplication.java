@@ -8,6 +8,7 @@ import com.ecommerce.exceptions.ProductServiceException;
 import com.ecommerce.exceptions.UserServiceException;
 import com.ecommerce.interfaces.AdminServiceInterface;
 import com.ecommerce.interfaces.CartServiceInterface;
+import com.ecommerce.interfaces.GuestServiceInterface;
 import com.ecommerce.interfaces.ProductServiceInterface;
 import com.ecommerce.interfaces.UserServiceInterface;
 import com.ecommerce.model.Order;
@@ -15,6 +16,7 @@ import com.ecommerce.model.Product;
 import com.ecommerce.model.User;
 import com.ecommerce.services.AdminService;
 import com.ecommerce.services.CartServices;
+import com.ecommerce.services.GuestService;
 import com.ecommerce.services.ProductService;
 import com.ecommerce.services.UserService;
 
@@ -26,6 +28,7 @@ public class EcomApplication {
 		ProductServiceInterface productService = new ProductService();
 		CartServiceInterface cartService = new CartServices();
 		AdminServiceInterface adminService = new AdminService();
+		GuestServiceInterface guestService = new GuestService();
 		User currentUser = null;
 		try {
 			while (true) {
@@ -220,13 +223,60 @@ public class EcomApplication {
 					break;
 
 				case 10:
+					try {
+						if (currentUser != null && "admin".equalsIgnoreCase(currentUser.getRole())) {
+							System.out.println("Enter Product: ");
+							int productId = scanner.nextInt();
+							int quantity = productService.checkProductQuantity(productId);
+							System.out.println(quantity);
 
+							if (quantity == 0) {
+								throw new ProductServiceException("Product item is 0");
+							}
+						}
+					} catch (ProductServiceException e) {
+						System.err.println(e.getMessage());
+					}
+					break;
+
+				case 11:
+					try {
+						if (currentUser != null && "admin".equalsIgnoreCase(currentUser.getRole())) {
+							adminService.viewRegisteredUsers();
+						}
+					} catch (ProductServiceException e) {
+						System.err.println(e.getMessage());
+					}
+					break;
+
+				case 12:
+					try {
+						if (currentUser != null && "admin".equalsIgnoreCase(currentUser.getRole())) {
+							System.out.println("Enter username: ");
+							String usernames = scanner.next();
+							adminService.viewUserHistory(usernames);
+						}
+					} catch (ProductServiceException e) {
+						System.err.println(e.getMessage());
+					}
+					break;
+
+				case 13:
+					try {
+						for (Product product : guestService.getAllProducts()) {
+							System.out.println(product);
+						}
+
+					} catch (ProductServiceException e) {
+						System.err.println(e.getMessage());
+					}
+					break;
+				default:
+					System.out.println("Invalid Choice Number");
 				}
 			}
 
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

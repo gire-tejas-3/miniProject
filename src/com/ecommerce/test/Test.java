@@ -29,4 +29,8 @@ public class Test {
 	void method7() {
 		System.out.println("Method No 7");
 	}
+
+	void method8() {
+		System.out.println("Method No 8");
+	}
 }

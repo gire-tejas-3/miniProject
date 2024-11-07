@@ -9,4 +9,8 @@ public class Test {
 	void method2() {
 		System.out.println("Method No 2");
 	}
+
+	void method3() {
+		System.out.println("Method No 2");
+	}
 }

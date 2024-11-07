@@ -45,7 +45,7 @@ public class ProductService implements ProductServiceInterface {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet result = null;
-		List<Product> products = new ArrayList<Product>();
+		List<Product> products = new ArrayList<>();
 		try {
 			con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT * FROM products ORDER BY pid ASC");

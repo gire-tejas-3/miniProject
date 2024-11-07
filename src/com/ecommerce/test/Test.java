@@ -21,4 +21,12 @@ public class Test {
 	void method5() {
 		System.out.println("Method No 5");
 	}
+
+	void method6() {
+		System.out.println("Method No 6");
+	}
+
+	void method7() {
+		System.out.println("Method No 7");
+	}
 }
